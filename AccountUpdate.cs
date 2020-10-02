@@ -39,11 +39,15 @@ namespace MyPlugins
 
                 try
                 {
+                    tracingService.Trace(context.Depth.ToString());
                     // Plug-in business logic goes here.  
+                    if(context.Depth > 1)
+                    return;
+
                     if(account.Attributes["revenue"] != null)
                     {
                         decimal revenue =  ((Money)account.Atrributes["revenue"]).Value;
-                        revenue = Math.Round(revenue, 2);
+                        revenue = Math.Round(revenue, 1);
                         account.Attributes["revenue"] = new Money(revenue);
                     }
 

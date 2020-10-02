@@ -10,6 +10,12 @@ namespace MyPlugins
 {
     public class TaskCreate : IPlugin
     {
+        int tax;
+        public TaskCreate(string unSecuredConfig, string unSecuredConfig)
+        {
+            tax = Convert.ToInt32(unSecuredConfig);
+
+        }
         public void Execute(IServiceProvider serviceProvider)
         {
             // Extract the tracing service for use in debugging sandboxed plug-ins.  
