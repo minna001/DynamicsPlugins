@@ -5,10 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xrm.Sdk;
 using System.ServiceModel;
-using Microsoft.Xrm.Sdk.Query;
+
 namespace MyPlugins
 {
-    public class duplicate : IPlugin
+    public class PreEntityimage : IPlugin
     {
         public void Execute(IServiceProvider serviceProvider)
         {
@@ -35,40 +35,18 @@ namespace MyPlugins
                 context.InputParameters["Target"] is Entity)
             {
                 // Obtain the target entity from the input parameters.  
-                Entity contact = (Entity)context.InputParameters["Target"];
+                Entity entity = (Entity)context.InputParameters["Target"];
 
                 try
                 {
                     // Plug-in business logic goes here.  
-                    //Using shared variable example
-                    string key = context.SharedVariables["Key1"].ToString();
-                    //Must be same pipeline t use shared var
+                    string telephone1 = entity.Attributes["telephone1"].ToString();
 
+                    Entity preimage = (Entity)context.PreEntityimage["PreImage"];   
+                    string oldBusinessPhone = entity.Attributes["telephone1"].ToString();
 
-                    string email = string.Empty;    
-                    if (contact.Attributes.Contains("emailaddress1"))
-                    {
-                        email = contact.Attributes["emailaddress1"].ToString();
-                        // select * from contact where email addresss == "Email1"
-                        QueryExpression query = new QueryExpression("contact");
-                        query.ColumnSet = new ColumnSet(new string[]{"emailaddress1"}); 
-                        query.Criteria.AddCondition("emailaddress1",ConditionOperator.Equal,email)
-                        EntityCollection collection = service.RetriveMultiple(query);
-
-                            if (collection.Entities.Count > 0)
-                            {
-                                throw new InvalidPluginExecutionException("Contact with email already exists within the System");
-                                
-                            }
+                    throw new InvalidPluginExecutionException("phone number was changed from" + oldBusinessPhone + "To" + telephone1);
                         
-                        
-                         
-                                            
-                    }
-                    
-
-
-
                 }
 
                 catch (FaultException<OrganizationServiceFault> ex)

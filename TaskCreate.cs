@@ -27,6 +27,9 @@ namespace MyPlugins
             IOrganizationServiceFactory serviceFactory =
                 (IOrganizationServiceFactory)serviceProvider.GetService(typeof(IOrganizationServiceFactory));
             IOrganizationService service = serviceFactory.CreateOrganizationService(context.UserId);
+            
+            //Impersonation if calling user above does not have admin rights can use the impersonatiion user below(Admoinservice in the logic)
+            IOrganizationService adminservice = serviceFactory.CreateOrganizationService(new Guid(""));
 
             
 
@@ -40,6 +43,9 @@ namespace MyPlugins
                 try
                 {
                     // Plug-in business logic goes here.  
+                    //make shared variable
+                    context.SharedVariables.Add("Key1","Some Info");
+                    
                     Entity taskRecord = new Entity("task");
                    
                     //set single line of text

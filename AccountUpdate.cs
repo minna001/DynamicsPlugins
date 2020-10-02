@@ -8,7 +8,7 @@ using System.ServiceModel;
 using Microsoft.Xrm.Sdk.Query;
 namespace MyPlugins
 {
-    public class duplicate : IPlugin
+    public class AccountUpdate : IPlugin
     {
         public void Execute(IServiceProvider serviceProvider)
         {
@@ -35,37 +35,17 @@ namespace MyPlugins
                 context.InputParameters["Target"] is Entity)
             {
                 // Obtain the target entity from the input parameters.  
-                Entity contact = (Entity)context.InputParameters["Target"];
+                Entity account = (Entity)context.InputParameters["Target"];
 
                 try
                 {
                     // Plug-in business logic goes here.  
-                    //Using shared variable example
-                    string key = context.SharedVariables["Key1"].ToString();
-                    //Must be same pipeline t use shared var
-
-
-                    string email = string.Empty;    
-                    if (contact.Attributes.Contains("emailaddress1"))
+                    if(account.Attributes["revenue"] != null)
                     {
-                        email = contact.Attributes["emailaddress1"].ToString();
-                        // select * from contact where email addresss == "Email1"
-                        QueryExpression query = new QueryExpression("contact");
-                        query.ColumnSet = new ColumnSet(new string[]{"emailaddress1"}); 
-                        query.Criteria.AddCondition("emailaddress1",ConditionOperator.Equal,email)
-                        EntityCollection collection = service.RetriveMultiple(query);
-
-                            if (collection.Entities.Count > 0)
-                            {
-                                throw new InvalidPluginExecutionException("Contact with email already exists within the System");
-                                
-                            }
-                        
-                        
-                         
-                                            
+                        decimal revenue =  ((Money)account.Atrributes["revenue"]).Value;
+                        revenue = Math.Round(revenue, 2);
+                        account.Attributes["revenue"] = new Money(revenue);
                     }
-                    
 
 
 
