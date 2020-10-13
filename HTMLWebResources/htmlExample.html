@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <script>
+            function Buttonclick(){
+               // define the data to create new account
+                var contact =
+            {
+                "firstname": "Sample Account",
+                "lastname": "WebAPI",
+                "address1_latitude": 47.639583,
+                "description": "This is the description of the sample account",
+                "revenue": 5000000,
+                "accountcategorycode": 1
+            }
+
+                // create account record
+                parent.Xrm.WebApi.createRecord("contact", contact).then(
+                    function success(result) {
+                        console.log("Account created with ID: " + result.id);
+                        document.getElementById("text").innerHTML = result.id;
+                        // perform operations on record creation
+                    },
+                    function (error) {
+                        console.log(error.message);
+                        document.getElementById("text").innerHTML = error.message;
+                        // handle error conditions
+                    }
+                );
+               
+            }
+            </script>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+    </head>
+    <body>
+        <input type="button" value="Click me Please" onclick="Buttonclick"/>
+
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        
+        <script src="" async defer></script>
+    </body>
+</html>

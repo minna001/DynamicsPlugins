@@ -1,0 +1,8 @@
+function ShowProgressIndicator() {
+try {
+Xrm.Utility.showProgressIndicator("The Page is Loading... Please wait...");
+}
+catch (e) {
+Xrm.Utility.alertDialog(e.message);
+}
+}
